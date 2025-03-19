@@ -54,7 +54,7 @@ public class AuthController {
         // Codifica la password
         user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
         // Assegna il ruolo di default (assicurati di avere già inserito questo ruolo nel database)
-        // user.setRoles(...);
+        // user.setRoles();
         userService.saveUser(user);
         return ResponseEntity.ok(new MessageResponse("Registrazione avvenuta con successo!"));
     }

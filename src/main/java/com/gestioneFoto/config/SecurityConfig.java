@@ -79,7 +79,7 @@ public class SecurityConfig {
 
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173","https://scattifestosi.netlify.app"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
