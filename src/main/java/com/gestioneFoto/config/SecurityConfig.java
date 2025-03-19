@@ -76,8 +76,8 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Puoi specificare l'origine o usare "*" (ma "*" non funziona con le credenziali)
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173","https://lesser-jonell-costantino-d1cc8af5.koyeb.app"));
+
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173","https://scattifestosi.netlify.app"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

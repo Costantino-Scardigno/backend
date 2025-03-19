@@ -46,7 +46,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signupRequest) {
         if(userService.findByUsername(signupRequest.getUsername()).isPresent()){
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
+            return ResponseEntity.badRequest().body(new MessageResponse("Errore: Username non disponibile!"));
         }
         User user = new User();
         user.setUsername(signupRequest.getUsername());
@@ -56,6 +56,6 @@ public class AuthController {
         // Assegna il ruolo di default (assicurati di avere già inserito questo ruolo nel database)
         // user.setRoles(...);
         userService.saveUser(user);
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return ResponseEntity.ok(new MessageResponse("Registrazione avvenuta con successo!"));
     }
 }
