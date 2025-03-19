@@ -56,7 +56,8 @@ public class PhotoController {
         try {
             // Carica il file su Cloudinary e ottieni l'URL sicuro
             Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-            String imageUrl = (String) uploadResult.get("secure_url");
+            String originalUrl = (String) uploadResult.get("secure_url");
+            String imageUrl = originalUrl.replace("/upload/", "/upload/w_1200,q_auto,f_auto/");
 
             // Recupera l'evento tramite l'ID
             Optional<Event> eventOptional = eventService.getEventById(eventId);
