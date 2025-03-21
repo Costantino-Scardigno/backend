@@ -29,7 +29,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Lob
+
     @Column
     private String profileImage; // Base64 encoded image, optional
 
