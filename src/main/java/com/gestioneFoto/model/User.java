@@ -29,6 +29,10 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Lob
+    @Column
+    private String profileImage; // Base64 encoded image, optional
+
     // Relazione molti-a-molti con i ruoli
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",

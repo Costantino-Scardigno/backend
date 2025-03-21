@@ -1,7 +1,9 @@
 package com.gestioneFoto.service;
 
 import com.gestioneFoto.model.User;
+import com.gestioneFoto.payload.request.UserUpdateRequest;
 import com.gestioneFoto.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,9 +13,11 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Optional<User> findByUsername(String username) {
@@ -30,17 +34,35 @@ public class UserService {
     }
 
     @Transactional
-    public User updateUser(User user) {
-        User existingUser = userRepository.findById(user.getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public User updateUser(Long id, UserUpdateRequest updateRequest) {
+        // Find the user
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Utente non trovato"));
 
-        // Aggiorna solo i campi consentiti
-        existingUser.setEmail(user.getEmail());
+        // Update email if provided
+        if (updateRequest.getEmail() != null) {
+            user.setEmail(updateRequest.getEmail());
+        }
 
-        // Non aggiornare la password direttamente, dovrebbe essere gestito attraverso un meccanismo separato
-        // con hashing adeguato
+        // Update profile image if provided
+        if (updateRequest.getProfileImage() != null) {
+            user.setProfileImage(updateRequest.getProfileImage());
+            return userRepository.save(user);
+        }
 
-        return userRepository.save(existingUser);
+        // Handle password change
+        if (updateRequest.getNewPassword() != null) {
+            // Verify current password
+            if (!passwordEncoder.matches(updateRequest.getCurrentPassword(), user.getPassword())) {
+                throw new RuntimeException("Password attuale non corretta");
+            }
+
+            // Encode and set new password
+            user.setPassword(passwordEncoder.encode(updateRequest.getNewPassword()));
+        }
+
+        // Save and return updated user
+        return userRepository.save(user);
     }
 
     @Transactional
