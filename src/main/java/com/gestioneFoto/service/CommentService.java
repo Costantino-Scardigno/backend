@@ -87,6 +87,7 @@ public class CommentService {
         dto.setPhotoId(comment.getPhoto().getId());
         dto.setUserId(comment.getUser().getId());
         dto.setUsername(comment.getUser().getUsername());
+        dto.setProfileImage(comment.getUser().getProfileImage());
         return dto;
     }
 }
